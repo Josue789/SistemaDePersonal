@@ -1,0 +1,151 @@
+<div class="container grid p-15 justify-items-center w-full gap-5">
+  <h1 class="text-2xl font-bold">Plantilla de trabajadores</h1>
+  <span class="text-gray-500">Revisa la lista de trabajadores y sus datos</span>
+  <!-- Tarjetas de resumen-->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+    @if (loading()) {
+      <ngx-skeleton-loader count="1" appearance="square" size="200" />
+      <ngx-skeleton-loader count="1" appearance="square" size="200" />
+      <ngx-skeleton-loader count="1" appearance="square" size="200" />
+    } @else {
+      <mat-card class="p-5">
+        <mat-card-content>
+          <div class="flex items-center gap-5">
+            <mat-icon
+              class="h-15! w-15! text-4xl! bg-blue-300! text-blue-600! rounded-lg! flex! items-center! justify-center!"
+              >people</mat-icon
+            >
+            <div>
+              <h2 class="text-xl text-gray-500">Total de trabajadores</h2>
+              <p class="text-4xl font-bold">{{ trabajadores().length }}</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="p-5">
+        <mat-card-content>
+          <div class="flex items-center gap-5">
+            <mat-icon
+              class="h-15! w-15! text-4xl! bg-orange-300! text-orange-600! rounded-lg! flex! items-center! justify-center!"
+              >timer</mat-icon
+            >
+            <div>
+              <h2 class="text-xl text-gray-500">Contratos por renovar</h2>
+              <p class="text-4xl font-bold">{{ porRenovar() }}</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="p-5">
+        <mat-card-content>
+          <div class="flex items-center gap-5">
+            <mat-icon
+              class="h-15! w-15! text-4xl! bg-gray-300! text-gray-600! rounded-lg! flex! items-center! justify-center!"
+              >beach_access</mat-icon
+            >
+            <div>
+              <h2 class="text-xl text-gray-500">Trabajadores de vacaciones</h2>
+              <p class="text-4xl font-bold">{{ deVacaciones() }}</p>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+
+  <div class="flex justify-end w-full gap-2">
+    <mat-form-field appearance="outline" class="w-full">
+      <input matInput placeholder="Buscar" />
+      <button matSuffix class="px-5">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+    <button matFab extended class="bg-gray-50! text-gray-950!" routerLink="/export">
+      <mat-icon class="h-10 w-10 text-4xl flex items-center justify-center"
+        >system_update_alt</mat-icon
+      >
+      <span>Exportar</span>
+    </button>
+    @if (authService.isAdmin()) {
+      <button matFab extended class="bg-blue-950! text-white!" routerLink="/new-worker">
+        <mat-icon class="h-10 w-10 text-4xl flex items-center justify-center">add</mat-icon>
+        <span>Agregar trabajador</span>
+      </button>
+    }
+  </div>
+
+  <!--Tabla de trabajadores-->
+  @if (loading()) {
+    <ngx-skeleton-loader
+      loadingText="Cargando trabajadores..."
+      count="1"
+      appearance="square"
+      size="900"
+    />
+  } @else {
+    <table matSort (matSortChange)="sortData($event)" class="w-full">
+      <tr>
+        <th mat-sort-header="name">Nombre completo</th>
+        <th mat-sort-header="position">Puesto</th>
+        <th mat-sort-header="department">Departamento</th>
+        <th mat-sort-header="rfc">RFC</th>
+        <th mat-sort-header="status">Estatus</th>
+        <th>Acciones</th>
+      </tr>
+
+      @for (trabajador of sortedData(); track trabajador) {
+        <tr class="hover:bg-gray-100 cursor-pointer">
+          <td class="font-bold">
+            <div class="flex flex-row gap-2">
+              <mat-chip-avatar
+                class="h-8 w-8 text-xs! bg-blue-950! text-white! flex items-center justify-center rounded-full"
+              >
+                {{ trabajador.nombre.charAt(0) }} {{ trabajador.apellidoPaterno.charAt(0) }}
+              </mat-chip-avatar>
+              <div class="flex flex-col">
+                <span
+                  >{{ trabajador.nombre }} {{ trabajador.apellidoPaterno }}
+                  {{ trabajador.apellidoMaterno }}</span
+                >
+                <span class="text-gray-500 text-xs">{{ trabajador.rfc }}</span>
+              </div>
+            </div>
+          </td>
+          <td>{{ trabajador.puesto }}</td>
+          <td>{{ trabajador.area }}</td>
+          <td>{{ trabajador.rfc }}</td>
+          <td>
+            <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full"
+              >{{ trabajador.estatus }}
+            </span>
+          </td>
+          <td class="flex justify-center">
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="viewDetails(trabajador)">
+                <mat-icon>visibility</mat-icon>
+                <span>Ver detalles</span>
+              </button>
+              <button mat-menu-item (click)="renewContract(trabajador)">
+                <mat-icon>timer</mat-icon>
+                <span>Renovar contrato</span>
+              </button>
+              <button mat-menu-item (click)="editWorker(trabajador)">
+                <mat-icon>edit</mat-icon>
+                <span>Editar</span>
+              </button>
+              @if (authService.isAdmin()) {
+                <button mat-menu-item (click)="deleteWorker(trabajador)">
+                  <mat-icon>delete</mat-icon>
+                  <span>Eliminar</span>
+                </button>
+              }
+            </mat-menu>
+          </td>
+        </tr>
+      }
+    </table>
+  }
+</div>

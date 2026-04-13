@@ -1,0 +1,392 @@
+<div class="container grid p-10 justify-items-center w-full gap-5 m-5">
+  <div class="flex flex-row justify-between w-full items-center">
+    <div class="flex flex-col">
+      <h1 class="text-3xl font-bold m-0">Configuración</h1>
+      <span class="text-gray-500">Ajusta la configuración y políticas de la aplicación</span>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-4 gap-6 w-full mt-2 items-start">
+    <!-- Sidebar / Lateral -->
+    <mat-card class="col-span-1 border-0 shadow-sm sticky top-0">
+      <mat-card-content class="p-0">
+        <mat-nav-list class="pt-0">
+          <a
+            mat-list-item
+            (click)="selectSection('general')"
+            [class.bg-blue-50]="currentSection === 'general'"
+          >
+            <mat-icon matListItemIcon [class.text-blue-600]="currentSection === 'general'"
+              >settings</mat-icon
+            >
+            <div
+              matListItemTitle
+              [class.font-bold]="currentSection === 'general'"
+              [class.text-blue-700]="currentSection === 'general'"
+            >
+              General
+            </div>
+          </a>
+          @if (authService.isAdmin()) {
+            <a
+              mat-list-item
+              (click)="selectSection('vacations')"
+              [class.bg-blue-50]="currentSection === 'vacations'"
+            >
+              <mat-icon matListItemIcon [class.text-blue-600]="currentSection === 'vacations'"
+                >flight_takeoff</mat-icon
+              >
+              <div
+                matListItemTitle
+                [class.font-bold]="currentSection === 'vacations'"
+                [class.text-blue-700]="currentSection === 'vacations'"
+              >
+                Vacaciones
+              </div>
+            </a>
+            <a
+              mat-list-item
+              (click)="selectSection('holidays')"
+              [class.bg-blue-50]="currentSection === 'holidays'"
+            >
+              <mat-icon matListItemIcon [class.text-blue-600]="currentSection === 'holidays'"
+                >celebration</mat-icon
+              >
+              <div
+                matListItemTitle
+                [class.font-bold]="currentSection === 'holidays'"
+                [class.text-blue-700]="currentSection === 'holidays'"
+              >
+                Días Festivos
+              </div>
+            </a>
+            <a
+              mat-list-item
+              (click)="selectSection('notices')"
+              [class.bg-blue-50]="currentSection === 'notices'"
+            >
+              <mat-icon matListItemIcon [class.text-blue-600]="currentSection === 'notices'"
+                >campaign</mat-icon
+              >
+              <div
+                matListItemTitle
+                [class.font-bold]="currentSection === 'notices'"
+                [class.text-blue-700]="currentSection === 'notices'"
+              >
+                Avisos
+              </div>
+            </a>
+            <a
+              mat-list-item
+              (click)="selectSection('areas')"
+              [class.bg-blue-50]="currentSection === 'areas'"
+            >
+              <mat-icon matListItemIcon [class.text-blue-600]="currentSection === 'areas'"
+                >domain</mat-icon
+              >
+              <div
+                matListItemTitle
+                [class.font-bold]="currentSection === 'areas'"
+                [class.text-blue-700]="currentSection === 'areas'"
+              >
+                Áreas de Trabajo
+              </div>
+            </a>
+          }
+        </mat-nav-list>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Main Content Area -->
+    <mat-card class="col-span-3 border-0 shadow-md">
+      <mat-card-content class="p-8">
+        <!-- General Section -->
+        @if (currentSection === 'general') {
+          <div class="flex flex-col gap-10">
+            <div>
+              <h2 class="text-2xl font-bold mb-5 flex items-center gap-3">
+                <mat-icon class="text-gray-400">palette</mat-icon> Apariencia
+              </h2>
+              <mat-radio-group [(ngModel)]="themeSelected" class="flex flex-col gap-4 pl-2">
+                <mat-radio-button value="claro" color="primary">Tema Claro</mat-radio-button>
+                <mat-radio-button value="oscuro" color="primary">Tema Oscuro</mat-radio-button>
+                <mat-radio-button value="sistema" color="primary"
+                  >Predeterminado del sistema</mat-radio-button
+                >
+              </mat-radio-group>
+            </div>
+
+            <hr class="border-gray-200" />
+
+            <div>
+              <h2 class="text-2xl font-bold mb-2 flex items-center gap-3">
+                <mat-icon class="text-gray-400">storage</mat-icon> Base de Datos
+              </h2>
+              <p class="text-gray-500 mb-6 pl-1">
+                Exporta toda la información almacenada en el sistema para realizar un respaldo de
+                seguridad o migración.
+              </p>
+              <button
+                mat-flat-button
+                extended
+                class="bg-blue-950! text-white! py-6 px-5"
+                (click)="exportDb()"
+              >
+                <mat-icon class="mr-2">system_update_alt</mat-icon>
+                <span class="text-lg">Exportar Base de Datos Completa</span>
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- Vacaciones Section -->
+        @if (currentSection === 'vacations') {
+          <div class="flex flex-col gap-6">
+            <div>
+              <h2 class="text-2xl font-bold flex items-center gap-3">
+                <mat-icon class="text-amber-500">flight_takeoff</mat-icon> Configuración de
+                Vacaciones
+              </h2>
+              <p class="text-gray-500 mb-2 mt-2">
+                Establece las reglas para la generación y el uso de las vacaciones otorgadas a los
+                trabajadores.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6 mt-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Meses requeridos (Antigüedad)</mat-label>
+                <input matInput type="number" [(ngModel)]="vacationConfig.meses_minimos" />
+                <mat-icon matSuffix class="text-gray-400">pending_actions</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Días otorgados inicialmente</mat-label>
+                <input matInput type="number" [(ngModel)]="vacationConfig.dias_iniciales" />
+                <mat-icon matSuffix class="text-gray-400">today</mat-icon>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="col-span-2">
+                <mat-label>Vigencia para usarlos (en meses)</mat-label>
+                <input matInput type="number" [(ngModel)]="vacationConfig.meses_vigencia" />
+                <mat-icon matSuffix class="text-gray-400">timer</mat-icon>
+                <mat-hint
+                  >Tiempo límite para consumir las vacaciones generadas antes de que expiren
+                  automáticamente.</mat-hint
+                >
+              </mat-form-field>
+            </div>
+
+            <div class="flex justify-end mt-6">
+              <button mat-flat-button color="primary" class="py-5 px-6" (click)="saveVacationConfig()">
+                <span class="text-lg">Guardar Cambios</span>
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- Días Festivos Section -->
+        @if (currentSection === 'holidays') {
+          <div class="flex flex-col gap-6">
+            <div>
+              <h2 class="text-2xl font-bold flex items-center gap-3">
+                <mat-icon class="text-red-500">celebration</mat-icon> Días Festivos
+              </h2>
+              <p class="text-gray-500 mb-2 mt-2">
+                Administrar los días declarados como festivos (no laborables) en el calendario.
+              </p>
+            </div>
+
+            <div
+              class="flex flex-row gap-5 items-center bg-gray-50 p-6 rounded-2xl border border-gray-200"
+            >
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Nombre de la fecha festiva</mat-label>
+                <input
+                  matInput
+                  [(ngModel)]="newHolidayName"
+                  placeholder="Ej. Día de la Constitución"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Fecha</mat-label>
+                <input matInput [matDatepicker]="holidayPicker" [(ngModel)]="newHolidayDate" />
+                <mat-datepicker-toggle matSuffix [for]="holidayPicker"></mat-datepicker-toggle>
+                <mat-datepicker #holidayPicker></mat-datepicker>
+              </mat-form-field>
+
+              <button
+                mat-fab
+                class="bg-blue-600! text-white! mb-5 shrink-0 shadow-none border-blue-700"
+                (click)="addHoliday()"
+              >
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+
+            <mat-list class="mt-4">
+              @for (holiday of holidays(); track holiday.id) {
+                <mat-list-item class="mb-2 border border-gray-100 rounded-lg">
+                  <mat-icon matListItemIcon class="text-red-500!">event</mat-icon>
+                  <div matListItemTitle class="font-bold text-lg">{{ holiday.descripcion }}</div>
+                  <div matListItemLine class="text-gray-500 font-medium">
+                    {{ holiday.fecha | date: 'longDate' }}
+                  </div>
+                  <button mat-icon-button matListItemMeta color="warn" (click)="deleteHoliday(holiday.id!)">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </mat-list-item>
+              }
+            </mat-list>
+          </div>
+        }
+
+        <!-- Avisos Section -->
+        @if (currentSection === 'notices') {
+          <div class="flex flex-col gap-6">
+            <div>
+              <h2 class="text-2xl font-bold flex items-center gap-3">
+                <mat-icon class="text-blue-500">campaign</mat-icon> Tablero de Avisos
+              </h2>
+              <p class="text-gray-500 mb-2 mt-2">
+                Crear y administrar anuncios generales para que todos los trabajadores estén
+                informados.
+              </p>
+            </div>
+
+            <div
+              class="flex flex-col gap-4 bg-gray-50 p-6 rounded-2xl border border-gray-200 shadow-sm"
+            >
+              <div class="flex flex-row gap-5">
+                <mat-form-field appearance="outline" class="w-full">
+                  <mat-label>Título del Aviso</mat-label>
+                  <input
+                    matInput
+                    [(ngModel)]="newNoticeTitle"
+                    placeholder="Ej. Actualización del sistema"
+                  />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Fecha de Expiración / Evento</mat-label>
+                  <input matInput [matDatepicker]="noticePicker" [(ngModel)]="newNoticeDate" />
+                  <mat-datepicker-toggle matSuffix [for]="noticePicker"></mat-datepicker-toggle>
+                  <mat-datepicker #noticePicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Descripción o Mensaje completo</mat-label>
+                <textarea
+                  matInput
+                  [(ngModel)]="newNoticeDescription"
+                  rows="3"
+                  placeholder="Redacta el contenido del aviso..."
+                ></textarea>
+              </mat-form-field>
+
+              <div class="flex justify-end mt-2">
+                <button
+                  mat-flat-button
+                  class="bg-blue-600! text-white! py-5 px-6"
+                  (click)="addNotice()"
+                >
+                  <mat-icon>add_alert</mat-icon>
+                  <span class="text-lg">Publicar Aviso</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4 mt-6">
+              @for (notice of notices(); track notice.id) {
+                <mat-card
+                  class="border-l-4 border-l-blue-500! shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <mat-card-content
+                    class="flex flex-row justify-between items-start pt-4 px-4 pb-3"
+                  >
+                    <div>
+                      <h3 class="font-bold text-xl m-0 text-gray-800">{{ notice.titulo }}</h3>
+                      <p
+                        class="text-gray-400 text-sm font-medium mb-3 flex items-center gap-1 mt-1"
+                      >
+                        <mat-icon class="text-[16px] h-[16px] w-[16px]">calendar_today</mat-icon>
+                        {{ notice.fecha | date: 'mediumDate' }}
+                      </p>
+                      <p class="m-0 text-gray-600 leading-relaxed">{{ notice.descripcion }}</p>
+                    </div>
+                    <button
+                      mat-icon-button
+                      color="warn"
+                      (click)="deleteNotice(notice.id!)"
+                      matTooltip="Eliminar aviso"
+                    >
+                      <mat-icon>delete_outline</mat-icon>
+                    </button>
+                  </mat-card-content>
+                </mat-card>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Áreas de Trabajo Section -->
+        @if (currentSection === 'areas') {
+          <div class="flex flex-col gap-6">
+            <div>
+              <h2 class="text-2xl font-bold flex items-center gap-3">
+                <mat-icon class="text-green-600">domain</mat-icon> Áreas de Trabajo
+              </h2>
+              <p class="text-gray-500 mb-2 mt-2">
+                Administrar los departamentos, coordinaciones o áreas disponibles en la
+                organización.
+              </p>
+            </div>
+
+            <div
+              class="flex flex-row gap-5 items-center bg-gray-50 p-6 rounded-2xl border border-gray-200"
+            >
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Nombre de la Nueva Área</mat-label>
+                <input
+                  matInput
+                  [(ngModel)]="newAreaName"
+                  placeholder="Ej. Sistemas de Información"
+                  (keyup.enter)="addArea()"
+                />
+              </mat-form-field>
+
+              <button
+                mat-fab
+                class="bg-blue-600! text-white! mb-5 shrink-0"
+                (click)="addArea()"
+                [disabled]="!newAreaName"
+              >
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+
+            <mat-list class="mt-4">
+              @for (area of workAreas(); track area.id) {
+                <mat-list-item
+                  class="mb-2 border border-gray-100 rounded-lg hover:bg-gray-50 group"
+                >
+                  <mat-icon
+                    matListItemIcon
+                    class="text-gray-400 group-hover:text-blue-500 transition-colors"
+                    >work</mat-icon
+                  >
+                  <div matListItemTitle class="text-lg">{{ area.nombre }}</div>
+                  <button mat-icon-button matListItemMeta color="warn" (click)="deleteArea(area.id!)">
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </mat-list-item>
+              }
+            </mat-list>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

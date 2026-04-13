@@ -1,0 +1,272 @@
+<div class="container grid p-15 justify-items-center w-full gap-5">
+  <h1 class="text-2xl font-bold">Nuevo trabajador</h1>
+  <span class="text-sm text-gray-500">Ingresa los datos del nuevo trabajador</span>
+
+  <mat-stepper [linear]="true" #stepper class="w-full">
+    <mat-step [stepControl]="firstFormGroup">
+      <mat-card>
+        <mat-card-content>
+          <form [formGroup]="firstFormGroup" class="grid grid-cols-2 gap-3 mt-5">
+            <ng-template matStepLabel class="col-span-2">Datos personales</ng-template>
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre</mat-label>
+              <input matInput placeholder="Nombre(s)" formControlName="name" required />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Apellido paterno</mat-label>
+              <input
+                matInput
+                placeholder="Apellido paterno"
+                formControlName="paternalSurname"
+                required
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Apellido materno</mat-label>
+              <input
+                matInput
+                placeholder="Apellido materno"
+                formControlName="maternalSurname"
+                required
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha de nacimiento</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                formControlName="dateOfBirth"
+                required
+                placeholder="MM/DD/YYYY"
+                readonly
+                max="{{ today | date: 'yyyy-MM-dd' }}"
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>CURP</mat-label>
+              <input
+                matInput
+                placeholder="CURP"
+                formControlName="curp"
+                required
+                style="text-transform: uppercase"
+                maxlength="18"
+              />
+              <mat-error>CURP inválida</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>RFC</mat-label>
+              <input
+                matInput
+                placeholder="RFC"
+                formControlName="rfc"
+                required
+                style="text-transform: uppercase"
+                maxlength="13"
+              />
+              <mat-error>RFC inválida</mat-error>
+            </mat-form-field>
+            <div class="col-span-2 flex justify-end">
+              <button class="mt-5" matButton matStepperNext>Siguiente</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" label="Datos laborales">
+      <mat-card>
+        <mat-card-content>
+          <form [formGroup]="secondFormGroup" class="grid grid-cols-2 gap-3 mt-5">
+            <ng-template matStepLabel class="col-span-2">Datos laborales</ng-template>
+            <mat-form-field appearance="outline">
+              <mat-label>Puesto</mat-label>
+              <mat-select formControlName="position" required>
+                @for (puesto of puestos; track puesto.id) {
+                  <mat-option [value]="puesto.id">{{ puesto.nombre }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Departamento</mat-label>
+              <input matInput placeholder="Departamento" formControlName="department" required [readonly]="true" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha de ingreso</mat-label>
+              <input
+                matInput
+                [matDatepicker]="pickerAdmission"
+                formControlName="dateOfAdmission"
+                required
+                placeholder="MM/DD/YYYY"
+                readonly
+                max="{{ today | date: 'yyyy-MM-dd' }}"
+              />
+              <mat-datepicker-toggle matSuffix [for]="pickerAdmission"></mat-datepicker-toggle>
+              <mat-datepicker #pickerAdmission></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo de contrato</mat-label>
+              <mat-select formControlName="contractType" required>
+                @for (type of periodContractTypes; track type) {
+                  <mat-option [value]="type.value">{{ type.viewValue }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha de término de contrato</mat-label>
+              <input
+                matInput
+                [matDatepicker]="pickerEnd"
+                formControlName="endDate"
+                placeholder="MM/DD/YYYY"
+                readonly
+              />
+              <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+              <mat-datepicker #pickerEnd></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Salario</mat-label>
+              <span matPrefix class="text-gray-500 ms-2">$</span>
+              <input
+                type="number"
+                matInput
+                placeholder="Salario"
+                formControlName="salary"
+                min="0"
+                required
+                [readonly]="true"
+              />
+            </mat-form-field>
+          </form>
+        </mat-card-content>
+        <div class="col-span-2 flex justify-between p-5">
+          <button class="mt-5" matButton matStepperPrevious>Anterior</button>
+          <button class="mt-5" matButton matStepperNext>Siguiente</button>
+        </div>
+      </mat-card>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Datos de contacto</ng-template>
+      <mat-card>
+        <mat-card-content>
+          <form [formGroup]="thirdFormGroup" class="grid grid-cols-2 gap-3 mt-5">
+            <ng-template matStepLabel class="col-span-2">Datos de contacto</ng-template>
+            <mat-form-field appearance="outline">
+              <mat-label>Teléfono</mat-label>
+              <input
+                matInput
+                placeholder="Teléfono"
+                formControlName="phone"
+                required
+                maxlength="10"
+                pattern="^[0-9]{10}$"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Correo electrónico</mat-label>
+              <input
+                type="email"
+                matInput
+                placeholder="Correo electrónico"
+                formControlName="email"
+                required
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Calle</mat-label>
+              <input matInput placeholder="Calle" formControlName="address" required />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Número</mat-label>
+              <input matInput placeholder="Número" formControlName="number" required />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Código postal</mat-label>
+              <input
+                matInput
+                placeholder="Código postal"
+                formControlName="postalCode"
+                required
+                maxlength="5"
+                pattern="^[0-9]{5}$"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Colonia</mat-label>
+              <input matInput placeholder="Colonia" formControlName="neighborhood" required />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Municipio</mat-label>
+              <input matInput placeholder="Municipio" formControlName="municipality" required />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Estado</mat-label>
+              <mat-select formControlName="state" required>
+                @for (estado of estados; track estado.id) {
+                  <mat-option [value]="estado.id">{{ estado.nombre }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </form>
+        </mat-card-content>
+        <div class="col-span-2 flex justify-between p-5">
+          <button class="mt-5" matButton matStepperPrevious>Anterior</button>
+          <button class="mt-5" matButton matStepperNext>Siguiente</button>
+        </div>
+      </mat-card>
+    </mat-step>
+    <mat-step [stepControl]="fourthFormGroup">
+      <ng-template matStepLabel>Cuenta de usuario</ng-template>
+      <mat-card>
+        <mat-card-content>
+          <form [formGroup]="fourthFormGroup" class="grid grid-cols-2 gap-3 mt-5">
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre de usuario</mat-label>
+              <input matInput placeholder="Username" formControlName="username" required />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Contraseña</mat-label>
+              <input matInput type="password" placeholder="Password" formControlName="password" required />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Rol</mat-label>
+              <mat-select formControlName="rol" required>
+                <mat-option value="Trabajador">Trabajador</mat-option>
+                <mat-option value="Jefe de departamento">Jefe de departamento</mat-option>
+                <mat-option value="Administrador">Administrador</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </form>
+        </mat-card-content>
+        <div class="col-span-2 flex justify-between p-5">
+          <button class="mt-5" matButton matStepperPrevious>Anterior</button>
+          <button class="mt-5" matButton matStepperNext>Siguiente</button>
+        </div>
+      </mat-card>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Terminar</ng-template>
+      <mat-card>
+        <mat-card-content>
+          <form [formGroup]="fifthFormGroup" class="grid grid-cols-2 gap-3 mt-5">
+            <ng-template matStepLabel class="col-span-2">Terminar</ng-template>
+            <p class="col-span-2 text-center text-3xl">
+              ¿Estás seguro de que quieres registrar este trabajador?
+            </p>
+            <span class="col-span-2 text-center text-xl"
+              >Confirma que toda la información es correcta</span
+            >
+          </form>
+        </mat-card-content>
+        <div class="col-span-2 flex justify-between p-5">
+          <button class="mt-5" matButton matStepperPrevious>Anterior</button>
+          <button class="mt-5" matButton (click)="registerWorker()">
+            {{ isEditMode ? 'Guardar cambios' : 'Registrar' }}
+          </button>
+        </div>
+      </mat-card>
+    </mat-step>
+  </mat-stepper>
+</div>

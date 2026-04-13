@@ -1,0 +1,168 @@
+<div class="container grid p-15 justify-items-center w-full gap-5">
+  <h1 class="text-2xl font-bold">Vacaciones</h1>
+  <span class="text-gray-500">Revisa la lista de vacaciones y sus peticiones</span>
+  <!-- Tarjetas de resumen-->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+    <mat-card class="p-5">
+      <mat-card-content>
+        <div class="flex items-center gap-5">
+          <mat-icon
+            class="h-15! w-15! text-4xl! bg-green-200! text-green-900! rounded-lg! flex! items-center! justify-center!"
+            >person_off</mat-icon
+          >
+          <div>
+            <h2 class="text-xl text-gray-500">Total de ausentes hoy</h2>
+            <p class="text-4xl font-bold">{{ vacacionesAprobadas().length }}</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="p-5">
+      <mat-card-content>
+        <div class="flex items-center gap-5">
+          <mat-icon
+            class="h-15! w-15! text-4xl! bg-yellow-200! text-yellow-900! rounded-lg! flex! items-center! justify-center!"
+            >pending_actions</mat-icon
+          >
+          <div>
+            <h2 class="text-xl text-gray-500">Solicitudes pendientes</h2>
+            <p class="text-4xl font-bold">{{ vacaciones().length }}</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="p-5">
+      <mat-card-content>
+        <div class="flex items-center gap-5">
+          <mat-icon
+            class="h-15! w-15! text-4xl! bg-red-200! text-red-900! rounded-lg! flex! items-center! justify-center!"
+            >event</mat-icon
+          >
+          <div>
+            <h2 class="text-xl text-gray-500">Solicitudes hoy</h2>
+            <p class="text-4xl font-bold">{{ vacaciones().length }}</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!--Tablero de vacaciones-->
+  <mat-card class="w-full">
+    <mat-card-header>
+      <mat-card-title class="text-2xl! font-bold! justify-center! mb-5!"
+        >Tablero de vacaciones</mat-card-title
+      >
+    </mat-card-header>
+    <mat-card-content>
+      <!--Lista de trabajadores con vacaciones proximas-->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+        <mat-list class="w-full col-span-1">
+          @for (vacacion of vacacionesAprobadas(); track vacacion.id) {
+            <mat-list-item
+              class="border-b border-gray-200 rounded-lg my-5 hover:bg-gray-50! cursor-pointer!"
+            >
+              <div class="flex flex-row gap-2 w-full justify-between py-5">
+                <div class="flex flex-col">
+                  <span>{{ vacacion.worker_detail?.nombre }} {{ vacacion.worker_detail?.apellido_paterno }}</span>
+                  <span class="text-gray-400">{{ vacacion.fecha_inicio }} - {{ vacacion.fecha_fin }}</span>
+                </div>
+              </div>
+            </mat-list-item>
+          }
+        </mat-list>
+        <!--Calendario de vacaciones-->
+        <div class="w-full col-span-2">
+          <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+          <div class="flex flex-row gap-2 justify-items-center items-center justify-end mt-5">
+            <div class="h-2 w-2 rounded-full bg-[#8B9AFE]"></div>
+            <span class="text-gray-500">Vacaciones</span>
+            <div class="h-2 w-2 rounded-full bg-[#fd5da0]"></div>
+            <span class="text-gray-500">Economico</span>
+            <div class="h-2 w-2 rounded-full bg-[#FD5D5D]"></div>
+            <span class="text-gray-500">Enfermedad</span>
+            <div class="h-2 w-2 rounded-full bg-[#5DFD6B]"></div>
+            <span class="text-gray-500">Permiso</span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!--Tabla de solicitudes-->
+  <mat-card class="w-full">
+    <mat-card-header class="justify-between! border-b border-gray-200! mb-5!">
+      <mat-card-title class="text-2xl! font-bold!">Tabla de solicitudes</mat-card-title>
+      <div class="flex flex-row gap-2">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Buscar</mat-label>
+          <input matInput type="text" placeholder="Buscar" />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+        <button mat-fab class="hover:cursor-pointer" (click)="openVacationsDialog()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <table class="w-full">
+        <thead>
+          <tr>
+            <th class="text-center">Trabajador</th>
+            <th class="text-center">Tipo de solicitud</th>
+            <th class="text-center">Dias</th>
+            <th class="text-center">Inicio</th>
+            <th class="text-center">Fin</th>
+            <th class="text-center">Estado</th>
+            <th class="text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (vacacion of vacaciones(); track vacacion.id) {
+            <tr>
+              <td class="text-center">{{ vacacion.worker_detail?.nombre }} {{ vacacion.worker_detail?.apellido_paterno }}</td>
+              <td class="text-center">{{ vacacion.tipo_detail?.nombre }}</td>
+              <td class="text-center">{{ vacacion.dias }}</td>
+              <td class="text-center">{{ vacacion.fecha_inicio }}</td>
+              <td class="text-center">{{ vacacion.fecha_fin }}</td>
+              <td class="text-center">
+                @if (vacacion.estatus === 'aprobado') {
+                  <span class="text-green-500">Aprobado</span>
+                } @else if (vacacion.estatus === 'rechazado') {
+                  <span class="text-red-500">Rechazado</span>
+                } @else {
+                  <span class="text-yellow-500">Pendiente</span>
+                }
+              </td>
+              <td class="text-center">
+                <button mat-icon-button [matMenuTriggerFor]="menu" class="hover:cursor-pointer">
+                  <mat-icon>more_vert</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                  @if (vacacion.estatus === 'pendiente') {
+                    @if (authService.isAdmin() || authService.isJefeArea()) {
+                      <button mat-menu-item (click)="approveVacation(vacacion.id!)">
+                        <mat-icon class="text-green-600">check</mat-icon>
+                        <span>Aprobar</span>
+                      </button>
+                      <button mat-menu-item (click)="rejectVacation(vacacion.id!)">
+                        <mat-icon class="text-red-600">close</mat-icon>
+                        <span>Rechazar</span>
+                      </button>
+                    }
+                  }
+                  @if (authService.isAdmin()) {
+                    <button mat-menu-item (click)="deleteVacation(vacacion.id!)">
+                      <mat-icon>delete</mat-icon>
+                      <span>Eliminar</span>
+                    </button>
+                  }
+                </mat-menu>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>

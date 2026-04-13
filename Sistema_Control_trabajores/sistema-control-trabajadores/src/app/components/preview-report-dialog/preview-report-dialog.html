@@ -1,0 +1,55 @@
+<div class="flex flex-col gap-6 p-6 w-full max-w-4xl">
+  <!-- Header -->
+  <div class="flex justify-between items-center border-b border-gray-200 pb-3">
+    <div class="flex flex-col">
+      <h2 class="text-2xl font-bold">Vista previa del reporte</h2>
+      <span class="text-sm text-gray-500"> Revisa la información antes de exportar </span>
+    </div>
+
+    <button mat-icon-button (click)="onClose()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Info + formato -->
+  <div class="flex flex-col gap-4">
+    <!-- Nombre -->
+    <div class="flex justify-between items-center">
+      <div class="flex flex-col">
+        <span class="text-sm text-gray-500">Reporte</span>
+        <span class="font-semibold text-lg"> Reporte de Vacaciones </span>
+      </div>
+
+      <!-- Formato -->
+      <mat-button-toggle-group [(ngModel)]="formato" class="rounded-lg border">
+        <mat-button-toggle value="pdf">PDF</mat-button-toggle>
+        <mat-button-toggle value="excel">Excel</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div>
+
+  <!-- Preview -->
+  <div class="rounded-xl p-4 bg-gray-50">
+    <span class="text-sm text-gray-500 mb-2 block"> Vista previa </span>
+
+    <div class="bg-white rounded-lg shadow-sm p-4">
+      <!-- Aquí tu tabla -->
+      <span class="text-gray-400"> Aquí se mostrará la tabla del reporte </span>
+    </div>
+  </div>
+
+  <!-- Acciones -->
+  <div class="flex justify-end gap-3 pt-3 border-t border-gray-200">
+    <button mat-stroked-button (click)="onClose()">Cancelar</button>
+
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="onGenerate()"
+      class="flex items-center gap-2"
+    >
+      <mat-icon>download</mat-icon>
+      Exportar {{ formato === 'pdf' ? 'PDF' : 'Excel' }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<div class="container grid p-15 justify-items-center w-full gap-5">
+  <h1 class="text-2xl font-bold">Reportes</h1>
+  <span class="text-gray-500">Genera reportes de los trabajadores</span>
+  <!-- Tarjetas de opciones-->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
+    <mat-card class="p-5">
+      <mat-card-content>
+        <div class="flex flex-col items-center gap-5">
+          <mat-icon
+            class="h-15! w-15! text-4xl! bg-blue-300! text-blue-600! rounded-lg! flex! items-center! justify-center!"
+            >people</mat-icon
+          >
+          <h2 class="text-xl text-gray-500">Lista de trabajadores</h2>
+          <span class="text-gray-500">Genera una lista detallada de los trabajadores</span>
+          <button
+            mat-flat-button
+            class="bg-transparent! text-blue-950! border-2! border-blue-950! hover:bg-blue-900! hover:text-white!"
+            (click)="openPreviewReportDialog()"
+          >
+            <mat-icon class="h-10 w-10 text-4xl flex items-center justify-center"
+              >file_download</mat-icon
+            >
+            <span>Generar reporte</span>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="p-5">
+      <mat-card-content>
+        <div class="flex flex-col items-center gap-5">
+          <mat-icon
+            class="h-15! w-15! text-4xl! bg-blue-300! text-blue-600! rounded-lg! flex! items-center! justify-center!"
+            >timer</mat-icon
+          >
+          <h2 class="text-xl text-gray-500">Contratos por renovar</h2>
+          <span class="text-gray-500">Genera una lista detallada de los contratos por renovar</span>
+          <button
+            mat-flat-button
+            class="bg-transparent! text-blue-950! border-2! border-blue-950! hover:bg-blue-900! hover:text-white!"
+            (click)="openPreviewReportDialog()"
+          >
+            <mat-icon class="h-10 w-10 text-4xl flex items-center justify-center"
+              >file_download</mat-icon
+            >
+            <span>Generar reporte</span>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="p-5">
+      <mat-card-content>
+        <div class="flex flex-col items-center gap-5">
+          <mat-icon
+            class="h-15! w-15! text-4xl! bg-blue-300! text-blue-600! rounded-lg! flex! items-center! justify-center!"
+            >beach_access</mat-icon
+          >
+          <h2 class="text-xl text-gray-500">Ausentismo</h2>
+          <span class="text-gray-500">Genera una lista detallada de los permisos de ausencias</span>
+          <button
+            mat-flat-button
+            class="bg-transparent! text-blue-950! border-2! border-blue-950! hover:bg-blue-900! hover:text-white!"
+            (click)="openPreviewReportDialog()"
+          >
+            <mat-icon class="h-10 w-10 text-4xl flex items-center justify-center"
+              >file_download</mat-icon
+            >
+            <span>Generar reporte</span>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
