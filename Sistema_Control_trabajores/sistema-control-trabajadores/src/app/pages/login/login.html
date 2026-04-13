@@ -1,0 +1,46 @@
+<div class="container p-10 m-10 justify-items-center items-center">
+  <mat-card class="w-full p-10">
+    <mat-card-header class="flex w-full justify-center!">
+      <mat-card-title class="text-3xl! font-bold! text-center! mb-5!"
+        >Iniciar sesión</mat-card-title
+      >
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="formLogin">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>RFC (Usuario)</mat-label>
+          <input formControlName="usuario" matInput type="text" placeholder="Ingrese su RFC" />
+          <mat-icon matSuffix>person</mat-icon>
+          @if (
+            formLogin.get('usuario')?.hasError('required') && formLogin.get('usuario')?.touched
+          ) {
+            <mat-error>Usuario es requerido</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Contraseña</mat-label>
+          <input
+            formControlName="password"
+            matInput
+            [type]="hide ? 'password' : 'text'"
+            placeholder="Contraseña"
+          />
+          <mat-icon class="hover:cursor-pointer" matSuffix (click)="hide = !hide">{{
+            hide ? 'visibility' : 'visibility_off'
+          }}</mat-icon>
+          @if (
+            formLogin.get('password')?.hasError('required') && formLogin.get('password')?.touched
+          ) {
+            <mat-error>Contraseña es requerida</mat-error>
+          }
+        </mat-form-field>
+        @if (formLogin.hasError('invalid')) {
+          <mat-error class="text-center! mb-5!">Usuario o contraseña incorrectos</mat-error>
+        }
+        <button mat-raised-button color="primary" class="w-full" (click)="onLogin()">
+          Iniciar sesión
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

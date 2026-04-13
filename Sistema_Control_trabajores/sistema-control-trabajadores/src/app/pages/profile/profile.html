@@ -1,0 +1,302 @@
+@if (dataOfUser) {
+  <div class="container grid p-15 justify-items-center w-full gap-5">
+    <div class="grid grid-cols-3 gap-5 w-full m-10">
+      <!-- Información del trabajador -->
+      <div class="col-span-2">
+        <mat-card class="w-full">
+          <mat-card-content class="flex! flex-row! items-center justify-between gap-5">
+            <div class="flex flex-row items-center gap-5">
+              <img
+                src="https://thispersondoesnotexist.com/"
+                alt=""
+                class="h-20 w-20 rounded-full"
+              />
+              <div class="grid grid-rows-2 not-even:w-full">
+                <h2 class="text-xl font-bold">
+                  {{ dataOfUser.nombre }} {{ dataOfUser.apellidoPaterno }}
+                  {{ dataOfUser.apellidoMaterno }}
+                </h2>
+                <span class="text-gray-500">{{ dataOfUser.puesto }}</span>
+                <span class="flex flex-row items-center gap-2">
+                  <mat-icon>apartment</mat-icon>
+                  {{ dataOfUser.area }}
+                </span>
+              </div>
+            </div>
+            <button matFab extended class="flex justify-end!">
+              <mat-icon>file_download</mat-icon>
+              <span>Descargar credencial</span>
+            </button>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-tab-group class="w-full mt-10">
+          <!-- Datos personales -->
+          <mat-tab label="Datos personales" class="w-full">
+            <div class="grid grid-cols-1 gap-5 justify-items-center items-center m-5">
+              <mat-card class="p-5 w-full h-full">
+                <mat-card-content>
+                  <div class="flex flex-col items-start">
+                    <h2 class="text-xl text-gray-500">Datos personales</h2>
+                    <span class="text-gray-500">Información personal del trabajador</span>
+                  </div>
+                  <div class="grid grid-cols-2 gap-5 justify-items-start items-center m-5">
+                    <div class="flex flex-row items-center gap-2">
+                      <mat-icon>person</mat-icon>
+                      <span class="font-bold text-lg">Nombre:</span>
+                    </div>
+                    <span class="text-lg"
+                      >{{ dataOfUser.nombre }} {{ dataOfUser.apellidoPaterno }}
+                      {{ dataOfUser.apellidoMaterno }}</span
+                    >
+                    <div class="flex flex-row items-center gap-2">
+                      <mat-icon>badge</mat-icon>
+                      <span class="font-bold text-lg">CURP:</span>
+                    </div>
+                    <span class="text-lg">{{ dataOfUser.curp }}</span>
+                    <div class="flex flex-row items-center gap-2">
+                      <mat-icon>card_membership</mat-icon>
+                      <span class="font-bold text-lg">RFC:</span>
+                    </div>
+                    <span class="text-lg">{{ dataOfUser.rfc }}</span>
+                    <div class="flex flex-row items-center gap-2">
+                      <mat-icon>cake</mat-icon>
+                      <span class="font-bold text-lg">Fecha de nacimiento:</span>
+                    </div>
+                    <span class="text-lg">{{ dataOfUser.fechaNacimiento }}</span>
+                    <div class="flex flex-row items-center gap-2">
+                      <mat-icon>home</mat-icon>
+                      <span class="font-bold text-lg">Domicilio:</span>
+                    </div>
+                    <span class="text-lg">{{ dataOfUser.calle }} {{ dataOfUser.numero }}</span>
+                    <div class="flex flex-row items-center gap-2">
+                      <mat-icon>phone</mat-icon>
+                      <span class="font-bold text-lg">Teléfono:</span>
+                    </div>
+                    <span class="text-lg">{{ dataOfUser.telefono }}</span>
+                    <div class="flex flex-row items-center gap-2">
+                      <mat-icon>email</mat-icon>
+                      <span class="font-bold text-lg">Correo electrónico:</span>
+                    </div>
+                    <span class="text-lg">{{ dataOfUser.correo }}</span>
+                  </div>
+                  <button matFab extended class="w-full mt-5 bg-blue-600! text-white!">
+                    <mat-icon>edit</mat-icon>
+                    <span>Solicitar corrección de datos personales</span>
+                  </button>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </mat-tab>
+
+          <!-- Contratos -->
+          <mat-tab label="Contratos">
+            <div class="grid grid-cols-1 gap-5 justify-items-center items-center m-5">
+              <mat-card class="p-5 w-full h-full">
+                <mat-card-content>
+                  <div class="flex flex-col items-start mb-5">
+                    <h2 class="text-xl text-gray-500">Contrato actual</h2>
+                    <span class="text-gray-500">Información del contrato del trabajador</span>
+                  </div>
+                  <div class="grid grid-cols-2 gap-5 justify-items-start items-center m-5">
+                    <div class="flex flex-row items-center gap-2">
+                      <mat-icon>calendar_today</mat-icon>
+                      <span class="font-bold text-lg">Fecha de inicio:</span>
+                    </div>
+                    <span class="text-lg">{{ dataOfUser.fechaContratacion }}</span>
+
+                    <div class="flex flex-row items-center gap-2">
+                      <mat-icon>calendar_today</mat-icon>
+                      <span class="font-bold text-lg">Fecha de fin:</span>
+                    </div>
+                    <span class="text-lg">{{ dataOfUser.fechaTerminoContrato }}</span>
+
+                    <div class="flex flex-row items-center gap-2">
+                      <mat-icon>attach_money</mat-icon>
+                      <span class="font-bold text-lg">Sueldo:</span>
+                    </div>
+                    <span class="text-lg">{{ dataOfUser.sueldo }} MXN/día</span>
+                  </div>
+                  <button matFab extended class="w-full mt-5 bg-red-600! text-white!">
+                    <mat-icon>logout</mat-icon>
+                    <span>Solicitar terminación de contrato</span>
+                  </button>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </mat-tab>
+
+          <!-- Vacaciones -->
+          <mat-tab label="Vacaciones">
+            <div class="grid grid-cols-3 gap-5 justify-items-center items-center m-5">
+              <mat-card class="p-5 w-full h-full">
+                <mat-card-content>
+                  <div class="flex flex-col gap-5 mb-5">
+                    <div class="flex flex-row justify-between gap-2">
+                      <h2 class="text-xl text-gray-500">Días disponibles</h2>
+                      <mat-icon class="text-green-600!">event_available</mat-icon>
+                    </div>
+                    <span class="text-4xl">{{ diasDisponibles }}</span>
+                  </div>
+                  <span class="text-gray-400"
+                    >Fecha de vencimiento:
+                    <span class="text-blue-950">{{ fechaVencimiento }}</span></span
+                  >
+                </mat-card-content>
+              </mat-card>
+              <mat-card class="p-5 w-full h-full">
+                <mat-card-content>
+                  <div class="flex flex-col gap-5 mb-5">
+                    <div class="flex flex-row justify-between gap-2">
+                      <h2 class="text-xl text-gray-500">Días gozados</h2>
+                      <mat-icon class="text-blue-600!">beach_access</mat-icon>
+                    </div>
+                    <span class="text-4xl">{{ diasGozados }}</span>
+                  </div>
+                  <mat-progress-bar
+                    mode="determinate"
+                    [value]="(diasGozados / (diasDisponibles + diasGozados)) * 100"
+                    class="h-2!"
+                  ></mat-progress-bar>
+                </mat-card-content>
+              </mat-card>
+              <mat-card class="p-5 w-full h-full">
+                <mat-card-content>
+                  <div class="flex flex-col gap-5 mb-5">
+                    <div class="flex flex-row justify-between gap-2">
+                      <h2 class="text-xl text-gray-500">Días pendientes</h2>
+                      <mat-icon class="text-yellow-600!">event_note</mat-icon>
+                    </div>
+                    <span class="text-4xl">{{ diasPendientes }}</span>
+                  </div>
+                  <span class="text-gray-400">En espera de aprobación</span>
+                </mat-card-content>
+              </mat-card>
+            </div>
+            <div class="grid grid-cols-1 gap-5 justify-items-center items-center m-5">
+              <mat-card class="p-5 w-full h-full">
+                <mat-card-content>
+                  <div class="flex flex-row justify-between items-center w-full gap-5">
+                    <h2 class="text-xl text-gray-500">Mis solicitudes</h2>
+                    <button matFab extended (click)="openVacationsDialog()">
+                      <mat-icon class="h-10 w-10 text-4xl flex items-center justify-center"
+                        >add</mat-icon
+                      >
+                      <span>Nueva solicitud</span>
+                    </button>
+                  </div>
+                  <!-- Tabla de solicitudes -->
+                  <table class="w-full mt-5">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Fecha</th>
+                        <th class="text-center">Tipo</th>
+                        <th class="text-center">Días</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (ausencia of ausencias; track ausencia.id) {
+                        <tr>
+                          <td class="text-center">{{ ausencia.fecha_inicio }}</td>
+                          <td class="text-center">{{ ausencia.tipo_detail?.nombre }}</td>
+                          <td class="text-center">{{ ausencia.dias }}</td>
+                          <td class="text-center">
+                            <span
+                              class="px-2 py-1 rounded-full text-white"
+                              [class.bg-green-600]="ausencia.estatus === 'aprobado'"
+                              [class.bg-yellow-600]="ausencia.estatus === 'pendiente'"
+                              [class.bg-red-600]="ausencia.estatus === 'rechazado'"
+                            >
+                              {{ ausencia.estatus | titlecase }}
+                            </span>
+                          </td>
+                          <td class="text-center">
+                            @if (ausencia.estatus === 'pendiente') {
+                              <button matIconButton>
+                                <mat-icon>delete</mat-icon>
+                              </button>
+                            }
+                          </td>
+                        </tr>
+                      } @empty {
+                        <tr>
+                          <td colspan="5" class="text-center py-5 text-gray-400">
+                            No tienes solicitudes registradas.
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+      <!-- Tablero de avisos -->
+      <div class="col-span-1 flex flex-col gap-5">
+        <mat-card>
+          <mat-card-content>
+            <div class="flex flex-row justify-between items-center w-full gap-5">
+              <h2 class="text-xl text-gray-500">Avisos</h2>
+            </div>
+            <div class="flex flex-col gap-5 mt-5">
+              @for (aviso of avisos; track aviso.id) {
+                <mat-card class="p-5 bg-gray-200! w-full h-auto">
+                  <mat-card-content>
+                    <div class="flex flex-row justify-between items-start w-full gap-2">
+                      <h2 class="text-lg font-bold text-gray-700 m-0 break-words flex-1">
+                        {{ aviso.titulo }}
+                      </h2>
+                      <span class="text-xs text-gray-400 whitespace-nowrap">{{ aviso.fecha }}</span>
+                    </div>
+                    <p class="text-gray-600 mt-2 m-0 break-words">{{ aviso.descripcion }}</p>
+                  </mat-card-content>
+                </mat-card>
+              } @empty {
+                <div class="flex flex-row justify-center items-center gap-2">
+                  <mat-icon matListIcon class="text-gray-400!">alarm</mat-icon>
+                  <div class="flex flex-col">
+                    <span matLine class="text-gray-400">No hay avisos</span>
+                  </div>
+                </div>
+              }
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <mat-card>
+          <mat-card-content>
+            <div class="flex flex-row justify-between items-center w-full gap-5 mb-5">
+              <h2 class="text-xl text-gray-500">Días festivos</h2>
+            </div>
+            <mat-list>
+              @for (dia of diasFestivos; track dia.id) {
+                <mat-list-item>
+                  <mat-icon matListItemIcon class="text-blue-500!">event</mat-icon>
+                  <div matListItemTitle class="font-bold text-gray-800">{{ dia.descripcion }}</div>
+                  <div matListItemLine class="text-gray-500">
+                    {{ dia.fecha | date: 'dd/MM/yyyy' }}
+                  </div>
+                </mat-list-item>
+              } @empty {
+                <mat-list-item>
+                  <mat-icon matListItemIcon class="text-gray-400!">event</mat-icon>
+                  <div matListItemTitle class="text-gray-400 font-medium italic">
+                    No hay días festivos
+                  </div>
+                </mat-list-item>
+              }
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="flex justify-center items-center h-full">
+    <mat-spinner></mat-spinner>
+    <p>Cargando información del perfil...</p>
+  </div>
+}

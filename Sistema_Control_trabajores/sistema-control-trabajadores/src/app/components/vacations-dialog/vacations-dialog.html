@@ -1,0 +1,95 @@
+<div class="container p-5 w-full">
+  <div class="flex flex-row justify-between items-center w-full gap-5">
+    <div class="flex flex-col">
+      <h2 class="text-xl text-gray-500 m-0">Solicitud de vacaciones</h2>
+      @if (availableDays > 0) {
+        <span class="text-sm text-green-600 font-bold">Saldo disponible: {{ availableDays }} días</span>
+      } @else if (isReadOnly) {
+        <span class="text-sm text-red-600 font-bold">Sin días disponibles</span>
+      }
+    </div>
+    <button matIconButton (click)="closeDialog()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="onSave()" class="grid grid-cols-1 gap-5 p-5">
+    @if (!isReadOnly) {
+      <!-- Trabajador -->
+      <mat-form-field appearance="outline">
+        <mat-label>Trabajador</mat-label>
+        <mat-select formControlName="worker">
+          @for (worker of workers; track worker.id) {
+            <mat-option [value]="worker.id">{{ worker.nombre }} {{ worker.apellidoPaterno }}</mat-option>
+          }
+        </mat-select>
+        @if (form.get('worker')?.hasError('required')) {
+          <mat-error> Selecciona un trabajador </mat-error>
+        }
+      </mat-form-field>
+    }
+    <!-- Fecha inicio -->
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de inicio</mat-label>
+      <input matInput [matDatepicker]="pickerStart" formControlName="inicio" />
+      <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+      <mat-datepicker #pickerStart></mat-datepicker>
+
+      @if (form.get('inicio')?.hasError('required')) {
+        <mat-error> La fecha de inicio es obligatoria </mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Fecha fin -->
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de fin</mat-label>
+      <input
+        matInput
+        [matDatepicker]="pickerEnd"
+        formControlName="fin"
+        [errorStateMatcher]="matcher"
+        [min]="minEndDate"
+      />
+      <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+      <mat-datepicker #pickerEnd></mat-datepicker>
+
+      @if (form.hasError('fechasInvalidas') && form.get('fin')?.touched) {
+        <mat-error> La fecha fin debe ser mayor a la de inicio </mat-error>
+      }
+
+      @if (form.get('fin')?.hasError('required')) {
+        <mat-error> La fecha de fin es obligatoria </mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Tipo -->
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de solicitud</mat-label>
+      <mat-select formControlName="tipo">
+        @for (type of types; track type.id) {
+          <mat-option [value]="type.id">{{ type.nombre }}</mat-option>
+        }
+      </mat-select>
+
+      @if (form.get('tipo')?.hasError('required')) {
+        <mat-error> Selecciona un tipo </mat-error>
+      }
+    </mat-form-field>
+
+    <!-- Nota -->
+    <mat-form-field appearance="outline">
+      <mat-label>Nota</mat-label>
+      <textarea matInput formControlName="nota"></textarea>
+    </mat-form-field>
+
+    <!-- BOTONES (dentro del form 🔥) -->
+    <div class="flex justify-between items-center w-full gap-5">
+      <button mat-stroked-button color="warn" type="button" (click)="closeDialog()">
+        Cancelar
+      </button>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        Guardar
+      </button>
+    </div>
+  </form>
+</div>

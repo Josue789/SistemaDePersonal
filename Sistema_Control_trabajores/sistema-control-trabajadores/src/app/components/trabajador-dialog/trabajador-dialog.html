@@ -1,0 +1,84 @@
+<div class="flex items-center gap-2 justify-between p-2">
+  <h2 mat-dialog-title>Datos del trabajador</h2>
+  <div>
+    <button mat-icon-button (click)="cerrar()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+
+<mat-dialog-content>
+  <div class="grid grid-cols-2 gap-x-8 gap-y-3 py-2">
+    <div>
+      <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Nombre</p>
+      <p class="text-base font-semibold">{{ trabajador.nombre }}</p>
+    </div>
+
+    <div>
+      <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Apellido Paterno</p>
+      <p class="text-base font-semibold">{{ trabajador.apellidoPaterno }}</p>
+    </div>
+
+    <div>
+      <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Apellido Materno</p>
+      <p class="text-base font-semibold">{{ trabajador.apellidoMaterno }}</p>
+    </div>
+
+    <div>
+      <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">CURP</p>
+      <p class="text-base font-mono">{{ trabajador.curp }}</p>
+    </div>
+
+    <div>
+      <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">RFC</p>
+      <p class="text-base font-mono">{{ trabajador.rfc }}</p>
+    </div>
+
+    <div>
+      <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Puesto</p>
+      <p class="text-base">{{ trabajador.puesto }}</p>
+    </div>
+
+    <div>
+      <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Área</p>
+      <p class="text-base">{{ trabajador.area }}</p>
+    </div>
+
+    <div>
+      <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Fecha de Contratación</p>
+      <p class="text-base">{{ trabajador.fechaContratacion }}</p>
+    </div>
+
+    <div>
+      <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">
+        Fecha de Termino de Contrato
+      </p>
+      <p class="text-base">{{ trabajador.fechaTerminoContrato }}</p>
+    </div>
+
+    <div>
+      <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Tipo de Contrato</p>
+      <p class="text-base">{{ trabajador.tipoContrato }}</p>
+    </div>
+
+    <div>
+      <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Salario</p>
+      <p class="text-base font-semibold">${{ trabajador.sueldo | number }}</p>
+    </div>
+
+    <div>
+      <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Estatus</p>
+      <p
+        class="text-base font-semibold"
+        [class.text-green-600]="trabajador.estatus === 'Activo'"
+        [class.text-red-600]="trabajador.estatus !== 'Activo'"
+      >
+        {{ trabajador.estatus }}
+      </p>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cerrar()">Cerrar</button>
+</mat-dialog-actions>

@@ -1,0 +1,84 @@
+<div class="w-full h-full">
+  <mat-sidenav-container class="h-screen">
+    <!--Menu lateral-->
+
+    <mat-sidenav #sidenav mode="over">
+      <mat-nav-list>
+        <!--Header-->
+        <div class="flex justify-between items-center gap-2 px-3 py-2">
+          <h1 class="text-2xl font-bold">¡Bienvenido!</h1>
+          <button mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+        <!--Opciones del menu-->
+        @if (authService.isAdmin() || authService.isJefeArea()) {
+          <mat-list-item [routerLink]="['']">
+            <div class="flex justify-between items-center gap-2">
+              <div class="flex items-center gap-2">
+                <mat-icon matListIcon class="text-gray-500!">home</mat-icon>
+                <span matLine class="text-gray-500!">Inicio</span>
+              </div>
+              <mat-icon matListIcon class="text-gray-500!">arrow_forward</mat-icon>
+            </div>
+          </mat-list-item>
+          <mat-list-item [routerLink]="['/vacations']">
+            <div class="flex justify-between items-center gap-2">
+              <div class="flex items-center gap-2">
+                <mat-icon matListIcon class="text-gray-500!">event</mat-icon>
+                <span matLine class="text-gray-500!">Vacaciones</span>
+              </div>
+              <mat-icon matListIcon class="text-gray-500!">arrow_forward</mat-icon>
+            </div>
+          </mat-list-item>
+          <mat-list-item [routerLink]="['/reports']">
+            <div class="flex justify-between items-center gap-2">
+              <div class="flex items-center gap-2">
+                <mat-icon matListIcon class="text-gray-500!">analytics</mat-icon>
+                <span matLine class="text-gray-500!">Reportes</span>
+              </div>
+              <mat-icon matListIcon class="text-gray-500!">arrow_forward</mat-icon>
+            </div>
+          </mat-list-item>
+        }
+        <mat-list-item [routerLink]="['/settings']">
+          <div class="flex justify-between items-center gap-2">
+            <div class="flex items-center gap-2">
+              <mat-icon matListIcon class="text-gray-500!">settings</mat-icon>
+              <span matLine class="text-gray-500!">Configuración</span>
+            </div>
+            <mat-icon matListIcon class="text-gray-500!">arrow_forward</mat-icon>
+          </div>
+        </mat-list-item>
+        <!--Footer-->
+        <div class="absolute bottom-0 w-full">
+          <mat-divider></mat-divider>
+          <div class="flex justify-between items-center gap-2 px-3 py-2">
+            <button mat-button class="flex items-center gap-2" [routerLink]="['/profile']">
+              <mat-icon matListIcon class="text-gray-500!">person</mat-icon>
+              <span matLine class="text-gray-500!">{{ getUser().username }}</span>
+            </button>
+            <button mat-icon-button (click)="onLogout()">
+              <mat-icon>logout</mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <!--Contenido principal-->
+    <mat-sidenav-content class="w-full">
+      <mat-toolbar color="primary" class="fixed top-0 z-50">
+        @if (isLoggedIn()) {
+          <button mat-icon-button (click)="sidenav.toggle()">
+            <mat-icon>menu</mat-icon>
+          </button>
+        }
+        <span matLine>Sistema de control de trabajadores</span>
+      </mat-toolbar>
+      <div class="container w-full h-full">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
